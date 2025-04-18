@@ -1,0 +1,73 @@
+serviceName: user-service
+
+server:
+  applicationConnectors:
+    - type: http
+      port: 8000
+  adminConnectors:
+    - type: http
+      port: 8001
+
+swaggerBundleConfiguration:
+  resourcePackage: com.sellular.sampledropwizard.resource
+  title: User Service APIs
+  version: 1.0
+  description: API documentation for user_service
+
+logging:
+  level: INFO
+  loggers:
+    com.sellular: DEBUG
+  appenders:
+    - type: console
+      threshold: ALL
+      timeZone: UTC
+      logFormat: "%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p [%thread] [%X{service} - %X{x-transaction-id}] - %c - %m%n"
+
+
+databaseConfig:
+  user: ${DB_USER}
+  password: ${DB_PASSWORD}
+  driverClass: "org.postgresql.Driver"
+  url: ${DB_URL}
+  persistenceXmlLocation: "classpath:META-INF/persistence.xml"
+  persistenceUnitName: "user_service"
+
+  jpaPropertiesMap:
+    hibernate.show_sql: false
+    hibernate.format_sql: false
+    hibernate.use_sql_comments: false
+    hibernate.dialect: "org.hibernate.dialect.PostgreSQLDialect"
+    hibernate.jdbc.time_zone: "Asia/Kolkata"
+    hibernate.physical_naming_strategy: "org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy"
+
+accessToken: ${ACCESS_TOKEN}
+
+kafkaConfiguration:
+  bootstrapServers:
+    - localhost:9092
+  clientId: "user-service"
+  schemaRegistryServers:
+    - http://localhost:8081
+
+  producerConfiguration:
+    autoRegisterSchemas: true
+    keySerializerClass: org.apache.kafka.common.serialization.StringSerializer
+    valueSerializerClass: io.confluent.kafka.serializers.protobuf.KafkaProtobufSerializer
+    eventTopicsMap:
+      user_created: com.sellular.user.user_created
+
+  consumers:
+    - eventName: user_created
+      active: true
+      topicConfiguration:
+        configOverrides:
+          schema.registry.url: http://localhost:8081
+          specific.protobuf.value.type: com.sellular.user.v1.UserEventModel
+        keyDeserializerClass: org.apache.kafka.common.serialization.StringDeserializer
+        valueDeserializerClass: io.confluent.kafka.serializers.protobuf.KafkaProtobufDeserializer
+        pollFrequency: "5000"
+        pollFrequencyUnit: "MILLIS"
+        topics:
+          - com.sellular.user.user_created
+        groupId: user-service-1
