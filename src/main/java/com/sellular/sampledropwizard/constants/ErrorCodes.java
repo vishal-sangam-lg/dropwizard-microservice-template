@@ -13,7 +13,8 @@ public enum ErrorCodes implements ErrorCodeInterface {
     ERROR_IN_GETTING_USER_2("8003", "Error in getting user by external id"),
     UNABLE_TO_CREATE_USER("8004", "Unable to create user"),
     USER_CONTACT_ALREADY_EXISTS("8005", "This contact is already mapped to another user"),
-    USER_EMAIL_ALREADY_EXISTS("8006", "This email is already mapped to another user");
+    USER_EMAIL_ALREADY_EXISTS("8006", "This email is already mapped to another user"),
+    ERROR_IN_GETTING_USER_3("8007", "Error in getting paginated user");
 
     private String errorCode;
 

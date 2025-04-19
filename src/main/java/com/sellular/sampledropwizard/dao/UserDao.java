@@ -30,16 +30,6 @@ public class UserDao extends AbstractDao<User> {
         return JPACountQueryBuilder.init(getEntityManager(), User.class).equal("deleted", Boolean.FALSE);
     }
 
-    public Optional<User> findByExternalId(final String externalId) {
-        try {
-            final JPAQueryBuilder<User> queryBuilder = queryBuilder();
-            queryBuilder.equal("externalId", externalId);
-            return queryBuilder.first();
-        } catch (NoResultException e) {
-            return Optional.empty();
-        }
-    }
-
     public Optional<User> findUserByContact(final String contact) {
         try {
             final JPAQueryBuilder<User> queryBuilder = queryBuilder();

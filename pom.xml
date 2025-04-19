@@ -5,7 +5,7 @@
 
     <groupId>com.sellular</groupId>
     <artifactId>sample-dropwizard-service</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -22,7 +22,7 @@
         <modelmapper.version>3.2.2</modelmapper.version>
         <maven.shade.plugin.version>3.2.4</maven.shade.plugin.version>
         <maven.jar.plugin.version>3.2.0</maven.jar.plugin.version>
-        <sellular-commons.version>1.0.15</sellular-commons.version>
+        <sellular-commons.version>1.0.17</sellular-commons.version>
         <sellular-schemas.verions>1.0.4</sellular-schemas.verions>
         <kafka-protobuf-serializer.version>7.5.0</kafka-protobuf-serializer.version>
         <swagger.version>2.2.30</swagger.version>

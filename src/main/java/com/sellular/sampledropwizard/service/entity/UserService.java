@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.persist.Transactional;
+import com.sellular.commons.core.domain.PaginatedResult;
 import com.sellular.commons.core.exception.SellularException;
 import com.sellular.commons.core.service.BaseService;
 import com.sellular.sampledropwizard.dao.UserDao;
@@ -137,6 +138,26 @@ public class UserService extends BaseService<User> {
 
         user.setDeleted(true);
         log.info("User marked as deleted: {}", externalId);
+    }
+
+    public PaginatedResult<User> getAllUsers(final Integer perPage, final Integer pageNo) {
+        try {
+            log.info("Fetching all users with perPage: {} pageNo: {}", perPage, pageNo);
+            return userDao.getPaginatedResult(perPage, pageNo);
+        } catch (Exception e) {
+            log.error("Error in getting paginated users. Exception: {}", e.toString());
+            throw new SellularException(ERROR_IN_GETTING_USER_3, HttpStatus.INTERNAL_SERVER_ERROR_500);
+        }
+    }
+
+    public PaginatedResult<User> getAllUsersByOrder(final Integer perPage, final Integer pageNo, final String orderBy, final Boolean asc) {
+        try {
+            log.info("Fetching all users with perPage: {} pageNo: {} orderBy: {} asc: {}", perPage, pageNo, orderBy, asc);
+            return userDao.getPaginatedResultWithOrdering(perPage, pageNo, orderBy, asc);
+        } catch (Exception e) {
+            log.error("Error in getting paginated users. Exception: {}", e.toString());
+            throw new SellularException(ERROR_IN_GETTING_USER_3, HttpStatus.INTERNAL_SERVER_ERROR_500);
+        }
     }
 
 }

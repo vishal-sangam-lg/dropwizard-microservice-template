@@ -118,4 +118,30 @@ public class UserResource {
         return Response.status(Response.Status.NO_CONTENT).build();
     }
 
+    @GET
+    @Path("/paginated")
+    @Timed
+    @Operation(summary = "Get all users", description = "Get all users with pagination")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Users found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GlobalSwaggerHeaders
+    public Response getPaginatedUsers(@QueryParam("per_page") final Integer perPage, @QueryParam("page_no") final Integer pageNo) {
+        return Response.status(Response.Status.OK).entity(userService.getAllUsers(perPage, pageNo)).build();
+    }
+
+    @GET
+    @Path("/paginated-order")
+    @Timed
+    @Operation(summary = "Get all users", description = "Get all users with pagination")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Users found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GlobalSwaggerHeaders
+    public Response getPaginatedUsersWithOrder(@QueryParam("per_page") final Integer perPage, @QueryParam("page_no") final Integer pageNo, @QueryParam("order_by") final String orderBy, @QueryParam("asc") final Boolean asc) {
+        return Response.status(Response.Status.OK).entity(userService.getAllUsersByOrder(perPage, pageNo, orderBy, asc)).build();
+    }
+
 }
